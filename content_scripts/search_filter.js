@@ -3,12 +3,16 @@
 (function() {
   'use strict';
 
-  // Result card selectors per search engine
-  const SELECTORS = {
-    google: '.g',
-    bing: '.b_algo',
-    duckduckgo: 'article[data-testid="result"]'
-  };
+  // Known result container IDs — direct children are individual result cards
+  const RESULT_CONTAINER_IDS = ['rso', 'search', 'b_results'];
+
+  // Card-level selectors to try first (fastest path)
+  const CARD_SELECTORS = [
+    '.g',                             // Google classic
+    '[data-hveid]',                   // Google modern (result tracking attribute)
+    '.b_algo',                        // Bing
+    'article[data-testid="result"]',  // DuckDuckGo
+  ].join(', ');
 
   // Check if storage allows filtering
   function shouldFilter() {
@@ -27,17 +31,25 @@
     }
   }
 
-  // Find the closest ancestor that matches a result card selector
+  // Find the result card element containing this anchor
   function findResultCard(element) {
     if (!element) return null;
-    // Check if element itself matches any selector
-    for (const engine in SELECTORS) {
-      if (element.matches(SELECTORS[engine])) {
-        return element;
+
+    // Try known card selectors first
+    const card = element.closest(CARD_SELECTORS);
+    if (card) return card;
+
+    // Fallback: walk up to find a direct child of a known results container
+    let el = element.parentElement;
+    while (el && el !== document.body) {
+      const parent = el.parentElement;
+      if (parent && RESULT_CONTAINER_IDS.includes(parent.id)) {
+        return el;
       }
+      el = parent;
     }
-    // Otherwise check parents
-    return element.closest(Object.values(SELECTORS).join(', '));
+
+    return null;
   }
 
   // Process all Fextralife links on the page

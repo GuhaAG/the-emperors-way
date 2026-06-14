@@ -3,7 +3,7 @@ const REDIRECT_RULE = {
   action: {
     type: "redirect",
     redirect: {
-      regexSubstitution: "https://roguetrader.wh40k.wiki/\\1"
+      regexSubstitution: "https://roguetrader.wh40k.wiki/?search=\\1"
     }
   },
   condition: {
