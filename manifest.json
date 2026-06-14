@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Rogue Trader Wiki Redirector",
+  "name": "The Emperor's Way",
   "version": "1.0",
   "description": "Redirects Fextralife Rogue Trader wiki pages to the community-run wh40k.wiki and hides Fextralife links in search results.",
   "permissions": [
