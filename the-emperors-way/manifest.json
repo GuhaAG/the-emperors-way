@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "Rogue Trader Wiki Redirector",
+  "version": "1.0",
+  "description": "Redirects Fextralife Rogue Trader wiki pages to the community-run wh40k.wiki and hides Fextralife links in search results.",
+  "permissions": [
+    "declarativeNetRequest",
+    "storage"
+  ],
+  "host_permissions": [
+    "*://roguetrader.wiki.fextralife.com/*",
+    "*://*.google.com/*",
+    "*://*.bing.com/*",
+    "*://duckduckgo.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.google.com/*",
+        "*://*.bing.com/*",
+        "*://duckduckgo.com/*"
+      ],
+      "js": [
+        "content_scripts/search_filter.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup/popup.html"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
